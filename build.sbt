@@ -1,5 +1,7 @@
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint")
 
+updateOptions := updateOptions.value.withCachedResolution(true)
+
 lazy val root = (project in file(".")).
   settings(
     name := "lambda-demo",

@@ -1,21 +1,13 @@
 package nl.trivento.lambda;
 import com.amazonaws.services.lambda.runtime.Context;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.net.InetAddress;
-
-
 public class JavaTest {
-  private int called = 0;
-  public void greeting(InputStream input, OutputStream output, Context context) throws IOException {
+  private String id = java.util.UUID.randomUUID().toString();
+  private static String jvmId = java.util.UUID.randomUUID().toString();
 
-    String result = "Greetings. " + InetAddress.getLocalHost().getHostAddress() + " [" + called++ + "] " + context.getAwsRequestId() + "> " + System.getenv();
+  public void greeting(java.io.InputStream input, java.io.OutputStream output, Context context) throws java.io.IOException {
+    Long runtime = (System.nanoTime() - Long.parseLong(System.getenv().get("LAMBDA_RUNTIME_LOAD_TIME")))/1000000;
+    String result = String.format("Greetings from %s Current time: %sns, Running since: %sns, Running for:%sms, classID: %s, jvmId: %s, requestId: %s", java.net.InetAddress.getLocalHost().getHostAddress(), System.nanoTime(), System.getenv().get("LAMBDA_RUNTIME_LOAD_TIME"), runtime, id, jvmId, context.getAwsRequestId());
     output.write(result.getBytes("UTF-8"));
   }
-
-
-
 }
